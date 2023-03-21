@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from ads.models import Announcement
+from category.models import Category
 from users.models import Location
 
 
@@ -14,7 +15,8 @@ class AnnouncementListSerializer(serializers.ModelSerializer):
 
 
 class AnnouncementDetailSerializer(serializers.ModelSerializer):
-    skills = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    # category = serializers.SlugRelatedField(
+    #     many=True, read_only=True, slug_field="name")
     class Meta:
         model = Announcement
         fields = "__all__"

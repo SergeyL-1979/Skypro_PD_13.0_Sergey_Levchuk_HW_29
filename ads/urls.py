@@ -4,6 +4,9 @@ from ads import views
 
 urlpatterns = [
     path("", views.AnnouncementListAPIView.as_view(), name="announce_list"),
+    path("<int:pk>/", views.AnnouncementDetailAPIView.as_view(), name="announce_detail"),
+
+
     # path("<int:pk>/", views.AnnouncementDetailView.as_view(), name="announce_detail"),
     # path("create/", views.AnnouncementCreateView.as_view(), name="create_announce"),
     # path(

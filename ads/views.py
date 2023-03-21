@@ -11,7 +11,7 @@ from django.views import generic
 from rest_framework.generics import ListAPIView, RetrieveAPIView,CreateAPIView, UpdateAPIView, DestroyAPIView
 
 from ads.models import Announcement, User, Category
-from ads.serializers import AnnouncementListSerializer
+from ads.serializers import AnnouncementListSerializer, AnnouncementDetailSerializer
 from avito import settings
 
 
@@ -23,6 +23,12 @@ def root(request):
 class AnnouncementListAPIView(ListAPIView):
     queryset = Announcement.objects.all()
     serializer_class = AnnouncementListSerializer
+
+
+# AnnouncementDetail ====== ГОТОВАЯ МОДЕЛЬ ДЕТАЛИЗАЦИИ ==============
+class AnnouncementDetailAPIView(RetrieveAPIView):
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementDetailSerializer
 
 # class AnnouncementListView(generic.ListView):
 #     """Модель отображающая весь список объектов и вывод на страницу не более 10"""
