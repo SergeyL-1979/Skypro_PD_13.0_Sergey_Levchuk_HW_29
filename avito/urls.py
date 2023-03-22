@@ -19,16 +19,28 @@ from django.contrib import admin
 from django.urls import path, include
 
 from ads import views
+from rest_framework import routers
+
+from ads.views import AnnouncementListViewSet
+from category.views import CategoryListViewSet
+
+# router = routers.SimpleRouter()
+router = routers.DefaultRouter()
+router.register(r'ad', AnnouncementListViewSet)
+router.register(r'cat', CategoryListViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.root),
+    # path('ads/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
 
-    path('ad/', include('ads.urls')),
-    path('cat/', include('category.urls')),
+    # path('ad/', include('ads.urls')),
+    # path('cat/', include('category.urls')),
     path('users/', include('users.urls')),
 ]
+
+urlpatterns += router.urls
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
