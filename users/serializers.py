@@ -1,16 +1,14 @@
 from rest_framework import serializers
-
 from users.models import User, Location
 
 
 class LocationListSerializer(serializers.ModelSerializer):
-     class Meta:
+    class Meta:
         model = Location
         fields = "__all__"
 
+
 class LocationDetailSerializer(serializers.ModelSerializer):
-    # skills = serializers.SlugRelatedField(
-    #     many=True, read_only=True, slug_field="name")
     class Meta:
         model = Location
         fields = "__all__"
@@ -35,9 +33,11 @@ class LocationDestroySerializer(serializers.ModelSerializer):
 
 class UserListSerializer(serializers.ModelSerializer):
     location = LocationListSerializer(many=True)
+
     class Meta:
         model = User
         fields = "__all__"
+
 
 class UserDetailSerializer(serializers.ModelSerializer):
     # skills = serializers.SlugRelatedField(

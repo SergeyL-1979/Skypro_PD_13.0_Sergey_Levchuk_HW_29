@@ -4,6 +4,7 @@ from category import views
 
 urlpatterns = [
     path("", views.CategoryListViewSet.as_view({"get": "list"})),
+    # path("", views.CategoryListViewSet.as_view()),
 
     # path("", views.CategoryListView.as_view(), name="category_list"),
     # path("<int:pk>/", views.CategoryDetailView.as_view(), name="category_detail"),

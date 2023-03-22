@@ -23,20 +23,23 @@ from rest_framework import routers
 
 from ads.views import AnnouncementListViewSet
 from category.views import CategoryListViewSet
+from users.views import LocationListViewSet
 
-# router = routers.SimpleRouter()
-router = routers.DefaultRouter()
+router = routers.SimpleRouter()
 router.register(r'ad', AnnouncementListViewSet)
-router.register(r'cat', CategoryListViewSet)
+# router.register(r'cat', CategoryListViewSet)
+
+router = routers.DefaultRouter()
+router.register(r'location', LocationListViewSet)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('ads/', include(router.urls)),
+    path('ads/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
 
-    # path('ad/', include('ads.urls')),
-    # path('cat/', include('category.urls')),
+    path('ad/', include('ads.urls')),
+    path('cat/', include('category.urls')),
     path('users/', include('users.urls')),
 ]
 

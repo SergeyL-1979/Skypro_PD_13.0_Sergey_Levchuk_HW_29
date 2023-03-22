@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.views import generic, View
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.viewsets import ModelViewSet
 
 from users.models import Location, User
 from avito import settings
@@ -215,13 +216,17 @@ class UserDeleteView(generic.DeleteView):
 
         return JsonResponse({"STATUS": "DELETE"})
 
-
 # ================== ПОЛЬЗОВАТЕЛЬ ЗАВЕРШЕН =======================================================
 
+
 # LocationList =============== ГООТОВАЯ МОДЕЛЬ МЕСТОПОЛОЖЕНИЯ =================
-class LocationListAPIView(ListAPIView):
+class LocationListViewSet(ModelViewSet):
     queryset = Location.objects.all()
     serializer_class = LocationListSerializer
+
+# class LocationListAPIView(ListAPIView):
+#     queryset = Location.objects.all()
+#     serializer_class = LocationListSerializer
 
 
 # LocationDetail ====== МОДЕЛЬ ДЕТАЛИЗАЦИИ ==============
@@ -244,41 +249,3 @@ class LocationUpdateAPIView(UpdateAPIView):
 class LocationDeleteAPIView(DestroyAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationDestroySerializer
-
-
-
-# class LocationListView(generic.ListView):
-#     """Модель выводить весь список объектов"""
-#     model = Location
-#
-#     def get(self, request, *args, **kwargs):
-#         super().get(request, *args, **kwargs)
-#         loc = Location.objects.all()
-#
-#         response = []
-#         for res in loc:
-#             response.append(
-#                 {
-#                     "name": res.name,
-#                     "lat": res.lat,
-#                     "lng": res.lng,
-#                 }
-#             )
-#         return JsonResponse(response, safe=False)
-#
-#
-# # LocationDetail ====== МОДЕЛЬ ДЕТАЛИЗАЦИИ ==============
-# class LocationDetailView(generic.DetailView):
-#     model = Location
-#
-#     def get(self, request, *args, **kwargs):
-#         # super().get(request, *args, **kwargs)
-#         location = self.get_object()
-#
-#         return JsonResponse(
-#             {
-#                 "name": location.name,
-#                 "lat": location.lat,
-#                 "lng": location.lng,
-#             }
-#         )

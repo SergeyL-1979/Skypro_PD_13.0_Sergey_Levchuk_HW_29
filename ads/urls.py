@@ -3,8 +3,8 @@ from django.urls import path
 from ads import views
 
 urlpatterns = [
-    path("adslist/", views.AnnouncementListViewSet.as_view({"get": "list"})),
-    path("adslist/<int:pk>/", views.AnnouncementListViewSet.as_view({"put": "update"})),
+    path("", views.AnnouncementListViewSet.as_view()),
+    path("adslist/<int:pk>/", views.AnnouncementListViewSet.as_view()),
 
     # path("", views.AnnouncementListAPIView.as_view(), name="announce_list"),
     # path("<int:pk>/", views.AnnouncementDetailAPIView.as_view(), name="announce_detail"),

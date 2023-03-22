@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     # ==== REST FRAMEWORK ====
     'rest_framework',
 
+    'django_filters',
+
     # ===== MY APP =====
     "ads.apps.AdsConfig",
     "category.apps.CategoryConfig",
@@ -85,22 +87,22 @@ WSGI_APPLICATION = "avito.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 # DATABASES = {
-#     'default': {
-#         'ENGINE': os.environ.get('DB_ENGINE'),
-#         'NAME': os.environ.get('DB_NAME'),
-#         'USER': os.environ.get('DB_USER'),
-#         'PASSWORD': os.environ.get('DB_PASSWORD'),
-#         'HOST': os.environ.get('DB_HOST'),
-#         'PORT': os.environ.get('DB_PORT'),
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': os.environ.get('DB_ENGINE'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
+    }
+}
 
 
 # Password validation
@@ -147,6 +149,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'ads/media/')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# TOTAL_ON_PAGE = 10
+
 # DEFAULT_RENDERER_CLASSES
 # Список или кортеж классов рендереров, определяющий набор рендереров по умолчанию,
 # которые могут быть использованы при возврате объекта Response.
@@ -157,27 +161,28 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 # === ОТОБРАЖЕНИЕ ЗАПРОСОВ К БАЗЕ ДАННЫХ В ТЕРМИНАЛЕ =====
-LOGGING = {
-    'disable_existing_loggers': False,
-    'version': 1,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'level': 'DEBUG'
-        }
-
-    },
-    'loggers': {
-        '': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate':False
-        },
-        'django.db':{
-            'level':'DEBUG',
-        },
-    }
-}
+# LOGGING = {
+#     'disable_existing_loggers': False,
+#     'version': 1,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#             'level': 'DEBUG'
+#         }
+#
+#     },
+#     'loggers': {
+#         '': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#             'propagate':False
+#         },
+#         'django.db':{
+#             'level':'DEBUG',
+#         },
+#     }
+# }

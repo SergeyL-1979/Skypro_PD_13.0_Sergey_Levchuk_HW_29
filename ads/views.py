@@ -1,18 +1,11 @@
-import json
-
-from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-from django.utils.decorators import method_decorator
 
-from django.views.decorators.csrf import csrf_exempt
-
-from django.views import generic
 from rest_framework.generics import ListAPIView, RetrieveAPIView,CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.viewsets import ModelViewSet
 
 from ads.models import Announcement, User, Category
 from ads.serializers import AnnouncementListSerializer, AnnouncementDetailSerializer
-from avito import settings
 
 
 def root(request):
@@ -20,15 +13,78 @@ def root(request):
 
 
 # AnnouncementList ================= ГОТОВАЯ МОДЕЛЬ ОБЪЯВЛЕНИЯ ========================
-class AnnouncementListAPIView(ListAPIView):
+class AnnouncementListViewSet(ListAPIView):
     queryset = Announcement.objects.all()
     serializer_class = AnnouncementListSerializer
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['category', 'name', 'description']
+
+    def get(self, request, *args, **kwargs):
+        announcement_text = request.GET.get('text', None)
+        if announcement_text:
+            self.queryset = self.queryset.filter(
+                name__icontains=announcement_text
+            )
+
+        cat_name = request.GET.get('cat', None)
+        if cat_name:
+            self.queryset = self.queryset.filter(
+                category_id__in=cat_name
+            )
+
+        location_name = request.GET.get('location', None)
+        if location_name:
+            self.queryset = self.queryset.filter(
+                author__location__name__icontains=location_name
+            )
+
+        price = request.GET.getlist('price', None)
+        price_q = None
+        for p in price:
+            if price_q is None:
+                price_q = Q(price=p)
+            else:
+                price_q |= Q(price=p)
+
+        if price_q:
+            self.queryset = self.queryset.filter(
+                price_q
+            )
+
+        return super().get(request, *args, **kwargs)
+
+    # TODO === ЧЕМ ОТЛИЧАЕТСЯ get ОТ get_queryset ? ===
+    # def get_queryset(self):
+    #     """
+    #     При необходимости ограничивает возвращенные категории для данного объявления
+    #     путем фильтрации по параметру запроса «category» в URL-адресе.
+    #     """
+    #     queryset = Announcement.objects.all()
+    #     category = self.request.query_params.get('cat', None)
+    #
+    #     if category is not None:
+    #         queryset = queryset.filter(category_id__in=category)
+    #     return queryset
+
+
+
+
+
+
+
+
+
+
+# ==== ЧЕРНОВИК ============================================
+# class AnnouncementListAPIView(ListAPIView):
+#     queryset = Announcement.objects.all()
+#     serializer_class = AnnouncementListSerializer
 
 
 # AnnouncementDetail ====== ГОТОВАЯ МОДЕЛЬ ДЕТАЛИЗАЦИИ ==============
-class AnnouncementDetailAPIView(RetrieveAPIView):
-    queryset = Announcement.objects.all()
-    serializer_class = AnnouncementDetailSerializer
+# class AnnouncementDetailAPIView(RetrieveAPIView):
+#     queryset = Announcement.objects.all()
+#     serializer_class = AnnouncementDetailSerializer
 
 # class AnnouncementListView(generic.ListView):
 #     """Модель отображающая весь список объектов и вывод на страницу не более 10"""
