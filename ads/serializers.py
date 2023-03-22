@@ -2,16 +2,21 @@ from rest_framework import serializers
 
 from ads.models import Announcement
 from category.models import Category
+from category.serializers import CategoryListSerializer
 from users.models import Location
+from users.serializers import UserListSerializer
 
 
 class AnnouncementListSerializer(serializers.ModelSerializer):
-    # name = serializers.CharField()
-    # location = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    """
+    Готовая модель сериализатора для объявлений.
+    Ready serializer model for declarations.
+    """
+    category = CategoryListSerializer()
+    author = UserListSerializer()
     class Meta:
         model = Announcement
         fields = "__all__"
-        # fields = ["id", "text", "slug", "status", "created", "username", "skills"]
 
 
 class AnnouncementDetailSerializer(serializers.ModelSerializer):
